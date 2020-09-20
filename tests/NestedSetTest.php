@@ -3,14 +3,14 @@
 namespace Tests;
 
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Nxu\NestedSet\NestedSet;
 use Orchestra\Testbench\TestCase;
 
 class NestedSetTest extends TestCase
 {
-    public function test_nested_set_macro_creates_columns()
+    /** @test */
+    public function nested_set_macro_creates_columns()
     {
         Schema::create('test_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -25,7 +25,8 @@ class NestedSetTest extends TestCase
         ]));
     }
 
-    public function test_nested_set_macro_creates_index()
+    /** @test */
+    public function nested_set_macro_creates_index()
     {
         Schema::create('test_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -38,7 +39,8 @@ class NestedSetTest extends TestCase
         $this->assertArrayHasKey('test_categories_left_right_parent_id_index', $indexes);
     }
 
-    public function test_drop_nested_set_macro_drops_columns()
+    /** @test */
+    public function drop_nested_set_macro_drops_columns()
     {
         Schema::create('test_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -57,7 +59,8 @@ class NestedSetTest extends TestCase
         ]));
     }
 
-    public function test_drop_index_macro_drops_index()
+    /** @test */
+    public function drop_index_macro_drops_index()
     {
         Schema::create('test_categories', function (Blueprint $table) {
             $table->bigIncrements('id');

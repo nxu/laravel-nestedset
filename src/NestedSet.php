@@ -13,10 +13,10 @@ final class NestedSet
 
     public static function addColumns(Blueprint $table): void
     {
-        $table->unsignedBigInteger(static::LEFT);
-        $table->unsignedBigInteger(static::RIGHT);
+        $table->unsignedBigInteger(static::LEFT)->nullable();
+        $table->unsignedBigInteger(static::RIGHT)->nullable();
         $table->unsignedBigInteger(static::PARENT_ID)->nullable();
-        $table->unsignedBigInteger(static::DEPTH);
+        $table->unsignedBigInteger(static::DEPTH)->nullable();
 
         $table->index([static::LEFT, static::RIGHT, static::PARENT_ID]);
     }

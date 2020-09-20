@@ -13,12 +13,19 @@ trait HasNestedSetColumns
 
     public function getQualifiedOrderColumn()
     {
-        return "$this->table.$this->orderBy";
+        $table = $this->getTable();
+
+        return "$table.$this->orderBy";
     }
 
     public function getLeftColumn()
     {
         return NestedSet::LEFT;
+    }
+
+    public function setLeftColumn($left)
+    {
+        $this->{$this->getLeftColumn()} = $left;
     }
 
     public function getQualifiedLeftColumn()
@@ -31,6 +38,11 @@ trait HasNestedSetColumns
         return NestedSet::RIGHT;
     }
 
+    public function setRightColumn($right)
+    {
+        $this->{$this->getRightColumn()} = $right;
+    }
+
     public function getQualifiedRightColumn()
     {
         return $this->table . '.' . $this->getRightColumn();
@@ -41,6 +53,11 @@ trait HasNestedSetColumns
         return NestedSet::PARENT_ID;
     }
 
+    public function setParentIdColumn($parentId)
+    {
+        $this->{$this->getParentIdColumn()} = $parentId;
+    }
+
     public function getQualifiedParentIdColumn()
     {
         return $this->table . '.' . $this->getParentIdColumn();
@@ -49,6 +66,11 @@ trait HasNestedSetColumns
     public function getDepthColumn()
     {
         return NestedSet::DEPTH;
+    }
+
+    public function setDepthColumn($depth)
+    {
+        $this->{$this->getDepthColumn()} = $depth;
     }
 
     public function getQualifiedDepthColumn()
