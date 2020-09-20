@@ -9,3 +9,9 @@ package.
 ## What is the nested set model?
 The nested set model is a pattern for representing hierarchical data in 
 relational databases.
+
+## Usage
+
+### Database design
+- Columns
+- Migrations
