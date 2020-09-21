@@ -35,7 +35,8 @@ class Descendants extends Relation
         $whereIn = $this->whereInMethod($this->parent, $this->parent->getKeyName());
 
         $this->query->{$whereIn}(
-            $this->parent->getKey(), $this->getKeys($models, $this->parent->getKey())
+            $this->parent->getKey(),
+            $this->getKeys($models, $this->parent->getKey())
         );
     }
 
