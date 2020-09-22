@@ -23,7 +23,7 @@ trait HasNestedSetColumns
         return $this->getTable() . '.' . $this->getOrderColumn();
     }
 
-    public function getLeft(): string
+    public function getLeft()
     {
         return $this->getAttribute($this->getLeftColumn());
     }

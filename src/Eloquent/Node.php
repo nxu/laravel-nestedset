@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Node extends Model
 {
-    use HasNestedSetColumns;
+    use HasNestedSetColumns, HasNestedSetQueryScopes;
 
     public function parent()
     {
