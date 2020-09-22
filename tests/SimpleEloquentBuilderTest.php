@@ -2,6 +2,10 @@
 
 namespace Tests;
 
+use Illuminate\Database\Events\TransactionBeginning;
+use Illuminate\Database\Events\TransactionCommitted;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Tests\Database\SampleCategorySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Nxu\NestedSet\Builders\SimpleEloquentBuilder;
@@ -69,6 +73,25 @@ class SimpleEloquentBuilderTest extends TestCase
         $this->assertEquals(17, $skirts->getAttribute(NestedSet::LEFT));
         $this->assertEquals(18, $skirts->getAttribute(NestedSet::RIGHT));
         $this->assertEquals(2, $skirts->getAttribute(NestedSet::DEPTH));
+    }
+
+    /** @test */
+    public function test_it_wraps_build_process_in_transaction()
+    {
+        $seeder = new SampleCategorySeeder();
+        $seeder->seedWithOnlyParentIds();
+
+        $testCategory = new TestCategory();
+
+        $testCategory->getConnection()->setEventDispatcher(
+            Event::fake([TransactionBeginning::class, TransactionCommitted::class])
+        );
+
+        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        $builder->rebuild($testCategory);
+
+        Event::assertDispatched(TransactionBeginning::class);
+        Event::assertDispatched(TransactionCommitted::class);
     }
 
     protected function setUp(): void

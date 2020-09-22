@@ -6,7 +6,7 @@ use Nxu\NestedSet\NestedSet;
 
 trait HasNestedSetColumns
 {
-    public $orderBy = 'id';
+    public $orderBy = 'left';
 
     public function getOrderColumn()
     {
@@ -37,7 +37,7 @@ trait HasNestedSetColumns
 
     public function getQualifiedLeftColumn()
     {
-        return $this->table . '.' . $this->getLeftColumn();
+        return $this->getTable() . '.' . $this->getLeftColumn();
     }
 
     public function getRight()
@@ -57,7 +57,7 @@ trait HasNestedSetColumns
 
     public function getQualifiedRightColumn()
     {
-        return $this->table . '.' . $this->getRightColumn();
+        return $this->getTable() . '.' . $this->getRightColumn();
     }
 
     public function getParentId()
@@ -77,7 +77,7 @@ trait HasNestedSetColumns
 
     public function getQualifiedParentIdColumn()
     {
-        return $this->table . '.' . $this->getParentIdColumn();
+        return $this->getTable() . '.' . $this->getParentIdColumn();
     }
 
     public function getDepth()
@@ -97,6 +97,6 @@ trait HasNestedSetColumns
 
     public function getQualifiedDepthColumn()
     {
-        return $this->table . '.' . $this->getDepthColumn();
+        return $this->getTable() . '.' . $this->getDepthColumn();
     }
 }
