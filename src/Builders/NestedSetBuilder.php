@@ -2,7 +2,7 @@
 
 namespace Nxu\NestedSet\Builders;
 
-use Nxu\NestedSet\Node;
+use Nxu\NestedSet\Eloquent\Node;
 
 interface NestedSetBuilder
 {

@@ -1,6 +1,8 @@
 <?php
 
-namespace Nxu\NestedSet;
+namespace Nxu\NestedSet\Eloquent;
+
+use Nxu\NestedSet\NestedSet;
 
 trait HasNestedSetColumns
 {

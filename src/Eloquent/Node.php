@@ -1,6 +1,6 @@
 <?php
 
-namespace Nxu\NestedSet;
+namespace Nxu\NestedSet\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,13 +10,13 @@ class Node extends Model
 
     public function parent()
     {
-        return $this->belongsTo(static::class, NestedSet::PARENT_ID)
+        return $this->belongsTo(static::class, $this->getParentIdColumn())
             ->orderBy($this->getQualifiedOrderColumn());
     }
 
     public function children()
     {
-        return $this->hasMany(static::class, NestedSet::PARENT_ID)
+        return $this->hasMany(static::class, $this->getParentIdColumn())
             ->orderBy($this->getQualifiedOrderColumn());
     }
 
