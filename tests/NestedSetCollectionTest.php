@@ -18,7 +18,22 @@ class NestedSetCollectionTest extends IntegrationTestWithDb
         $categories = TestCategory::all()->toHierarchy();
 
         $this->assertInstanceOf(NestedSetCollection::class, $categories);
+    }
 
+    /**
+     * @test
+     * @depends orders_into_nested_set_collection
+     */
+    public function sorts_into_provided_relation()
+    {
+        $seeder = new SampleCategorySeeder();
+        $seeder->seedWithOnlyParentIds();
+
+        $categories = TestCategory::all()->toHierarchy('something_stupid');
+
+        $clothes = $categories->first();
+        $this->assertInstanceOf(NestedSetCollection::class, $clothes->something_stupid);
+        $this->assertCount(2, $clothes->something_stupid);
     }
 
     /**

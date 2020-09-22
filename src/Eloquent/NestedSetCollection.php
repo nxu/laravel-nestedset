@@ -6,20 +6,20 @@ use Illuminate\Database\Eloquent\Collection;
 
 class NestedSetCollection extends Collection
 {
-    public function toHierarchy(): NestedSetCollection
+    public function toHierarchy($relation = 'children'): NestedSetCollection
     {
         $sortedModels = collect($this->getDictionary())
             ->sortBy(function (Node $node) {
                 return $node->getOrder();
             });
 
-        return new static($this->moveIntoHierarchy($sortedModels));
+        return new static($this->moveIntoHierarchy($sortedModels, $relation));
     }
 
-    protected function moveIntoHierarchy($models)
+    protected function moveIntoHierarchy($models, $relation)
     {
-        $models->each(function (Node $model) {
-            $model->setRelation('children', new static());
+        $models->each(function (Node $model) use ($relation) {
+            $model->setRelation($relation, new static());
         });
 
         $nestedKeys = [];
@@ -28,7 +28,7 @@ class NestedSetCollection extends Collection
             $parentId = $child->getParentId();
 
             if (! is_null($parentId) && $models->has($parentId)) {
-                $models->get($parentId)->children->push($child);
+                $models->get($parentId)->{$relation}->push($child);
                 $nestedKeys[] = $child->getKey();
             }
         }
