@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class NestedSetCollection extends Collection
 {
-    public function toHierarchy()
+    public function toHierarchy(): NestedSetCollection
     {
         $sortedModels = collect($this->getDictionary())
             ->sortBy(function (Node $node) {

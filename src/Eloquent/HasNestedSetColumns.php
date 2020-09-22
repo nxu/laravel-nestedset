@@ -13,32 +13,32 @@ trait HasNestedSetColumns
         return $this->getAttribute($this->getOrderColumn());
     }
 
-    public function getOrderColumn()
+    public function getOrderColumn(): string
     {
         return $this->orderBy;
     }
 
-    public function getQualifiedOrderColumn()
+    public function getQualifiedOrderColumn(): string
     {
         return $this->getTable() . '.' . $this->getOrderColumn();
     }
 
-    public function getLeft()
+    public function getLeft(): string
     {
         return $this->getAttribute($this->getLeftColumn());
     }
 
-    public function getLeftColumn()
+    public function getLeftColumn(): string
     {
         return NestedSet::LEFT;
     }
 
-    public function setLeftColumn($left)
+    public function setLeftColumn($left): self
     {
-        $this->{$this->getLeftColumn()} = $left;
+        return $this->setAttribute($this->getLeftColumn(), $left);
     }
 
-    public function getQualifiedLeftColumn()
+    public function getQualifiedLeftColumn(): string
     {
         return $this->getTable() . '.' . $this->getLeftColumn();
     }
@@ -48,17 +48,17 @@ trait HasNestedSetColumns
         return $this->getAttribute($this->getRightColumn());
     }
 
-    public function getRightColumn()
+    public function getRightColumn(): string
     {
         return NestedSet::RIGHT;
     }
 
-    public function setRightColumn($right)
+    public function setRightColumn($right): self
     {
-        $this->{$this->getRightColumn()} = $right;
+        return $this->setAttribute($this->getRightColumn(), $right);
     }
 
-    public function getQualifiedRightColumn()
+    public function getQualifiedRightColumn(): string
     {
         return $this->getTable() . '.' . $this->getRightColumn();
     }
@@ -68,17 +68,17 @@ trait HasNestedSetColumns
         return $this->getAttribute($this->getParentIdColumn());
     }
 
-    public function getParentIdColumn()
+    public function getParentIdColumn(): string
     {
         return NestedSet::PARENT_ID;
     }
 
-    public function setParentIdColumn($parentId)
+    public function setParentIdColumn($parentId): self
     {
-        $this->{$this->getParentIdColumn()} = $parentId;
+        return $this->setAttribute($this->getParentIdColumn(), $parentId);
     }
 
-    public function getQualifiedParentIdColumn()
+    public function getQualifiedParentIdColumn(): string
     {
         return $this->getTable() . '.' . $this->getParentIdColumn();
     }
@@ -88,17 +88,17 @@ trait HasNestedSetColumns
         return $this->getAttribute($this->getDepthColumn());
     }
 
-    public function getDepthColumn()
+    public function getDepthColumn(): string
     {
         return NestedSet::DEPTH;
     }
 
-    public function setDepthColumn($depth)
+    public function setDepthColumn($depth): self
     {
-        $this->{$this->getDepthColumn()} = $depth;
+        return $this->setAttribute($this->getDepthColumn(), $depth);
     }
 
-    public function getQualifiedDepthColumn()
+    public function getQualifiedDepthColumn(): string
     {
         return $this->getTable() . '.' . $this->getDepthColumn();
     }
