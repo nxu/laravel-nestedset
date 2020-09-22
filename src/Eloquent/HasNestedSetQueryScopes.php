@@ -3,6 +3,7 @@
 namespace Nxu\NestedSet\Eloquent;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @method Builder descendants()
@@ -30,6 +31,14 @@ trait HasNestedSetQueryScopes
     protected function scopeAncestorsAndSelf(Builder $query)
     {
         return $this->buildAncestorsQuery($query, true);
+    }
+
+    protected function scopeLeaves(Builder $query)
+    {
+        $left = $this->getQualifiedLeftColumn();
+        $right = $this->getQualifiedRightColumn();
+
+        return $query->descendantsAndSelf()->where(DB::raw("$right - $left"), '=', 1);
     }
 
     private function buildDescendantsQuery(Builder $query, $includeSelf = false)
