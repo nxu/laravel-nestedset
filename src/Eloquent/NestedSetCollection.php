@@ -8,6 +8,5 @@ class NestedSetCollection extends Collection
 {
     public function toHierarchy()
     {
-
     }
 }

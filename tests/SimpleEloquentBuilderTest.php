@@ -90,8 +90,8 @@ class SimpleEloquentBuilderTest extends TestCase
         $builder = $this->app->make(SimpleEloquentBuilder::class);
         $builder->rebuild($testCategory);
 
-        Event::assertDispatched(TransactionBeginning::class);
-        Event::assertDispatched(TransactionCommitted::class);
+        Event::assertDispatched(TransactionBeginning::class, 1);
+        Event::assertDispatched(TransactionCommitted::class, 1);
     }
 
     protected function setUp(): void
