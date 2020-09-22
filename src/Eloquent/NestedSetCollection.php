@@ -18,12 +18,16 @@ class NestedSetCollection extends Collection
 
     protected function moveIntoHierarchy($models, $relation)
     {
+        // Initialize an empty collection as relation value ('children').
         $models->each(function (Node $model) use ($relation) {
             $model->setRelation($relation, new static());
         });
 
         $nestedKeys = [];
 
+        // The `models` collection uses the primary key of the models as keys.
+        // This makes it easy to move each model into the children relation
+        // of its parent, as defined by the parent_id property.
         foreach ($models as $child) {
             $parentId = $child->getParentId();
 
@@ -33,6 +37,9 @@ class NestedSetCollection extends Collection
             }
         }
 
+        // As all the nested models are now someone's child, delete them
+        // from the original collection, thus only keeping the topmost
+        // level of the hierarchy.
         foreach ($nestedKeys as $nestedKey) {
             $models->forget($nestedKey);
         }
