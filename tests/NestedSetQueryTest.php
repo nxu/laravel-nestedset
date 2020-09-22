@@ -26,6 +26,23 @@ class NestedSetQueryTest extends IntegrationTestWithDb
     }
 
     /** @test */
+    public function allLeaves_orders_by_order_column()
+    {
+        $seeder = new SampleCategorySeeder();
+        $seeder->seedWithOnlyParentIds();
+
+        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        $builder->rebuild(new TestCategory());
+
+        TestCategory::where('title', 'Skirts')->update(['id' => 999999]);
+
+        $leaves = TestCategory::allLeaves()->pluck('title');
+
+        $this->assertEquals('Slacks', $leaves->first());
+        $this->assertEquals('Skirts', $leaves->last());
+    }
+
+    /** @test */
     public function allRoots_returns_all_roots()
     {
         $seeder = new SampleCategorySeeder();
@@ -44,5 +61,27 @@ class NestedSetQueryTest extends IntegrationTestWithDb
         $this->assertCount(2, $roots);
         $this->assertContains('Clothing', $roots);
         $this->assertContains('Shoes', $roots);
+    }
+
+    /** @test */
+    public function allRoots_orders_by_order_column()
+    {
+        $seeder = new SampleCategorySeeder();
+        $seeder->seedWithOnlyParentIds();
+
+        TestCategory::create([
+            'title' => 'Shoes',
+            'parent_id' => null
+        ]);
+
+        TestCategory::where('title', 'Clothing')->update(['id' => 999999]);
+
+        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        $builder->rebuild(new TestCategory());
+
+        $roots = TestCategory::allRoots()->pluck('title');
+
+        $this->assertEquals('Shoes', $roots->first());
+        $this->assertEquals('Clothing', $roots->last());
     }
 }
