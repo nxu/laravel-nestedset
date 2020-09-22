@@ -8,14 +8,19 @@ Laravel Eloquent ORM.
 Heavily inspired by the now deprecated [Baum](https://github.com/etrepat/baum)
 package.
 
-## Theory
+## What are nested sets?
 The nested set model is a pattern for representing hierarchical data (commonly
-known as trees) in relational databases.
+known as trees) in relational databases. It excels when the data changes 
+relatively rarely. 
+
+**The typical use cases** for this pattern include multi-level categories in
+online shops or complex menu systems.  
 
 ### Classic tree structures
 Classic tree structures typically only contain a `parent_id` column to represent
 the parent of each node. This is perfectly enough to store the hierarchical
-structure, but it makes queries to the database very costly. 
+structure, but it makes queries to the database that traverse the tree on 
+multiple levels very costly. 
 
 For example, to query all descendants of a single node, you need multiple, 
 recursive queries.
@@ -35,28 +40,41 @@ Example:
 
 ![https://i.imgur.com/coToNY7.png](https://i.imgur.com/coToNY7.png)
 
-This pattern also has drawbacks: modifying the table requires complicated
+This pattern also has a big drawback: modifying the table requires complicated
 and somewhat expensive logic. The goal of this package is to implement this
 logic so you can use nested sets as easily as possible. 
 
-## Usage
+### Database design
+The goal of this package is to make queries to the hierarchical data as easy as
+possible. Therefore each node has 4 attributes to describe its position in 
+the hierarchy. While this is mostly redundant, it also gives a lot more
+flexibility to make every query to the table as effective as possible.
 
-### Requirements
+The 4 columns used by the package:
+- `parent_id` - The primary key of the parent node. `null` for root nodes
+- `left` and `right` - Left and right edges of the node
+- `depth` - The depth of the node in the tree. Level 0 for root nodes
+
+### Automatic nested set building
+This package automatically processes all changes to the table and builds the
+nested set accordingly. It utilizes the `parent_id` attribute as a single source
+of truth and builds the hierarchy according to this column. 
+
+## Requirements
 This package requires PHP 7.2+ and Laravel 6+.
+
+## Usage
 
 ### Install
 ```
 composer require nxu/laravel-nestedset
 ```
 
-### Database design
-The goal of this package is to make queries to the hierarchical data as easy as
-possible. Therefore it utilizes the traditional `parent_id` as a single source
-of truth and builds the hierarchy according to this column. It also adds a
-fourth column called `depth` for querying the depth of any given node.
+### Migrations
+Add the required columns to your table containing the hierarchical data.
 
 #### Use the migration helper macro
-To add these columns, you can use the following Blueprint macro:
+To add the required columns, you may use the following Blueprint macro:
 
 ```php
 Schema::create('my_tree', function (Blueprint $table) {
@@ -78,15 +96,13 @@ Schema::create('my_tree', function (Blueprint $table) {
     $table->unsignedBigInteger('right')->nullable();
     $table->unsignedBigInteger('depth')->nullable();
 
-    // Foreign key - use the same type as your primary key
-    $table->unsignedBigInteger('parent_id')->nullable();
+    // Foreign key for the parent id
+    $table->foreignId('parent_id')
+          ->nullable()
+          ->constrained('my_tree')
+          ->onDelete('cascade');
 
-    $table->foreign('parent_id')
-        ->references('id')
-        ->on('my_tree')
-        ->onDelete('CASCADE');
-
-    // Optional, but this will make your queries faster
+    // Optional
     $table->index(['left', 'right', 'parent_id']);
 });
 ```
