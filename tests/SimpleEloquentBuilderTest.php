@@ -4,20 +4,17 @@ namespace Tests;
 
 use Illuminate\Database\Events\TransactionBeginning;
 use Illuminate\Database\Events\TransactionCommitted;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Tests\Database\SampleCategorySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Nxu\NestedSet\Builders\SimpleEloquentBuilder;
 use Nxu\NestedSet\NestedSet;
-use Nxu\NestedSet\NestedSetServiceProvider;
-use Orchestra\Testbench\TestCase;
 use Tests\TestClasses\TestCategory;
 
 /**
  * @see https://commons.wikimedia.org/wiki/File:NestedSetModel.svg
  */
-class SimpleEloquentBuilderTest extends TestCase
+class SimpleEloquentBuilderTest extends IntegrationTestWithDb
 {
     use RefreshDatabase;
 
@@ -92,18 +89,5 @@ class SimpleEloquentBuilderTest extends TestCase
 
         Event::assertDispatched(TransactionBeginning::class, 1);
         Event::assertDispatched(TransactionCommitted::class, 1);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->loadMigrationsFrom(__DIR__ . '/Database/Migrations');
-
-        $this->artisan('migrate', ['--database' => 'testing']);
-    }
-
-    protected function getPackageProviders($app)
-    {
-        return [NestedSetServiceProvider::class];
     }
 }

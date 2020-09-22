@@ -6,7 +6,12 @@ use Nxu\NestedSet\NestedSet;
 
 trait HasNestedSetColumns
 {
-    public $orderBy = 'left';
+    public $orderBy = 'id';
+
+    public function getOrder()
+    {
+        return $this->getAttribute($this->getOrderColumn());
+    }
 
     public function getOrderColumn()
     {
@@ -15,9 +20,7 @@ trait HasNestedSetColumns
 
     public function getQualifiedOrderColumn()
     {
-        $table = $this->getTable();
-
-        return "$table.$this->orderBy";
+        return $this->getTable() . '.' . $this->getOrderColumn();
     }
 
     public function getLeft()

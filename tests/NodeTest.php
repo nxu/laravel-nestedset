@@ -5,12 +5,11 @@ namespace Tests;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Nxu\NestedSet\NestedSetServiceProvider;
-use Orchestra\Testbench\TestCase;
+use Nxu\NestedSet\Eloquent\NestedSetCollection;
 use Tests\Database\SampleCategorySeeder;
 use Tests\TestClasses\TestCategory;
 
-class NodeTest extends TestCase
+class NodeTest extends IntegrationTestWithDb
 {
     use RefreshDatabase;
 
@@ -23,7 +22,7 @@ class NodeTest extends TestCase
         $this->assertEquals('test_categories.left', $node->getQualifiedLeftColumn());
         $this->assertEquals('test_categories.right', $node->getQualifiedRightColumn());
         $this->assertEquals('test_categories.depth', $node->getQualifiedDepthColumn());
-        $this->assertEquals('test_categories.left', $node->getQualifiedOrderColumn());
+        $this->assertEquals('test_categories.id', $node->getQualifiedOrderColumn());
 
         $node->setTable('faketable');
 
@@ -31,7 +30,7 @@ class NodeTest extends TestCase
         $this->assertEquals('faketable.left', $node->getQualifiedLeftColumn());
         $this->assertEquals('faketable.right', $node->getQualifiedRightColumn());
         $this->assertEquals('faketable.depth', $node->getQualifiedDepthColumn());
-        $this->assertEquals('faketable.left', $node->getQualifiedOrderColumn());
+        $this->assertEquals('faketable.id', $node->getQualifiedOrderColumn());
     }
 
     /** @test */
@@ -59,16 +58,11 @@ class NodeTest extends TestCase
         $this->assertContains('Evening Gowns', $dresses->children->pluck('title'));
     }
 
-    protected function setUp(): void
+    /** @test */
+    public function it_creates_nested_set_collection_instead_of_default()
     {
-        parent::setUp();
-        $this->loadMigrationsFrom(__DIR__ . '/Database/Migrations');
+        $testCategory = new TestCategory();
 
-        $this->artisan('migrate', ['--database' => 'testing']);
-    }
-
-    protected function getPackageProviders($app)
-    {
-        return [NestedSetServiceProvider::class];
+        $this->assertInstanceOf(NestedSetCollection::class, $testCategory->newCollection());
     }
 }
