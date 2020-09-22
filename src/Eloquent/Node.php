@@ -24,4 +24,9 @@ class Node extends Model
     {
         return $this->newQuery()->orderBy($this->getQualifiedOrderColumn());
     }
+
+    public function newCollection(array $models = [])
+    {
+        return new NestedSetCollection($models);
+    }
 }

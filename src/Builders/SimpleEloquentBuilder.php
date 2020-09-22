@@ -8,15 +8,11 @@ class SimpleEloquentBuilder implements NestedSetBuilder
 {
     public function rebuild(Node $model): void
     {
-        $rootNodes = $model->newNestedSetQuery()
-            ->whereNull($model->getParentIdColumn())
-            ->get();
-
-        $left = 1;
-
-        foreach ($rootNodes as $node) {
-            $left = $this->buildNode($node, $left, 0);
-        }
+        $model->getConnection()->transaction(function () use ($model) {
+            foreach ($this->getRootNodes($model) as $node) {
+                $left = $this->buildNode($node, $left ?? 1, 0);
+            }
+        });
     }
 
     protected function buildNode(Node $model, $left, $depth)
@@ -36,5 +32,14 @@ class SimpleEloquentBuilder implements NestedSetBuilder
         $model->save();
 
         return $left;
+    }
+
+    protected function getRootNodes(Node $model)
+    {
+        return $model->newQuery()
+            ->whereNull($model->getQualifiedParentIdColumn())
+            ->orderBy($model->getQualifiedLeftColumn())
+            ->orderBy($model->getQualifiedRightColumn())
+            ->get();
     }
 }

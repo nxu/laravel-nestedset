@@ -15,6 +15,26 @@ class NodeTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function it_includes_table_name_in_qualified_column_names()
+    {
+        $node = new TestCategory();
+
+        $this->assertEquals('test_categories.parent_id', $node->getQualifiedParentIdColumn());
+        $this->assertEquals('test_categories.left', $node->getQualifiedLeftColumn());
+        $this->assertEquals('test_categories.right', $node->getQualifiedRightColumn());
+        $this->assertEquals('test_categories.depth', $node->getQualifiedDepthColumn());
+        $this->assertEquals('test_categories.left', $node->getQualifiedOrderColumn());
+
+        $node->setTable('faketable');
+
+        $this->assertEquals('faketable.parent_id', $node->getQualifiedParentIdColumn());
+        $this->assertEquals('faketable.left', $node->getQualifiedLeftColumn());
+        $this->assertEquals('faketable.right', $node->getQualifiedRightColumn());
+        $this->assertEquals('faketable.depth', $node->getQualifiedDepthColumn());
+        $this->assertEquals('faketable.left', $node->getQualifiedOrderColumn());
+    }
+
+    /** @test */
     public function it_handles_parent_relationship()
     {
         $seeder = new SampleCategorySeeder();
