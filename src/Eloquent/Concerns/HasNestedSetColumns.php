@@ -1,6 +1,6 @@
 <?php
 
-namespace Nxu\NestedSet\Eloquent;
+namespace Nxu\NestedSet\Eloquent\Concerns;
 
 use Nxu\NestedSet\NestedSet;
 

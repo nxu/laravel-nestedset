@@ -3,6 +3,8 @@
 namespace Nxu\NestedSet\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
+use Nxu\NestedSet\Eloquent\Concerns\HasNestedSetColumns;
+use Nxu\NestedSet\Eloquent\Concerns\HasNestedSetQueryScopes;
 
 class Node extends Model
 {
