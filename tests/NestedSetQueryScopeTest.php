@@ -101,4 +101,20 @@ class NestedSetQueryScopeTest extends IntegrationTestWithDb
         $this->assertContains('Slacks', $leaves);
         $this->assertContains('Jackets', $leaves);
     }
+
+    /** @test */
+    public function leaves_scope_returns_empty_when_node_is_leaf()
+    {
+        $seeder = new SampleCategorySeeder();
+        $seeder->seedWithOnlyParentIds();
+
+        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        $builder->rebuild(new TestCategory());
+
+        $mens = TestCategory::where('title', 'Jackets')->first();
+
+        $leaves = $mens->leaves()->get()->pluck('title');
+
+        $this->assertCount(0, $leaves);
+    }
 }

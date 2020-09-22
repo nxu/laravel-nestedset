@@ -38,7 +38,7 @@ trait HasNestedSetQueryScopes
         $left = $this->getQualifiedLeftColumn();
         $right = $this->getQualifiedRightColumn();
 
-        return $query->descendantsAndSelf()->where(DB::raw("$right - $left"), '=', 1);
+        return $query->descendants()->where(DB::raw("$right - $left"), '=', 1);
     }
 
     private function buildDescendantsQuery(Builder $query, $includeSelf = false)
