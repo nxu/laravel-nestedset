@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
  * @method Builder descendantsAndSelf()
  * @method Builder ancestors()
  * @method Builder ancestorsAndSelf()
+ * @method Builder leaves()
  */
 trait HasNestedSetQueryScopes
 {
