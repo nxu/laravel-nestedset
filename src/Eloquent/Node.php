@@ -4,11 +4,14 @@ namespace Nxu\NestedSet\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
 use Nxu\NestedSet\Eloquent\Concerns\HasNestedSetColumns;
+use Nxu\NestedSet\Eloquent\Concerns\HasNestedSetQueries;
 use Nxu\NestedSet\Eloquent\Concerns\HasNestedSetQueryScopes;
 
 class Node extends Model
 {
-    use HasNestedSetColumns, HasNestedSetQueryScopes;
+    use HasNestedSetColumns,
+        HasNestedSetQueries,
+        HasNestedSetQueryScopes;
 
     public function parent()
     {

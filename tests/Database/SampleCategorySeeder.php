@@ -22,7 +22,7 @@ class SampleCategorySeeder
 
         $dresses = $this->createNode($womens->id, 'Dresses');
         $skirts = $this->createNode($womens->id, 'Skirts');
-        $blouses = $this->createNode($womens->id, 'blouses');
+        $blouses = $this->createNode($womens->id, 'Blouses');
 
         $eveningGowns = $this->createNode($dresses->id, 'Evening Gowns');
         $sunDresses = $this->createNode($dresses->id, 'Sun Dresses');
