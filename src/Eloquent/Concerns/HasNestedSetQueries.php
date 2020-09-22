@@ -17,4 +17,11 @@ trait HasNestedSetQueries
             ->orderBy($instance->getQualifiedOrderColumn())
             ->get();
     }
+
+    public static function allRoots()
+    {
+        $instance = new static;
+
+        return $instance->whereNull($instance->getQualifiedParentIdColumn())->get();
+    }
 }
