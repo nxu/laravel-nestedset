@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
  * @method Builder ancestors()
  * @method Builder ancestorsAndSelf()
  * @method Builder leaves()
+ * @method Builder siblings()
+ * @method Builder siblingsAndSelf()
  */
 trait HasNestedSetQueryScopes
 {
@@ -40,6 +42,20 @@ trait HasNestedSetQueryScopes
         $right = $this->getQualifiedRightColumn();
 
         return $query->descendants()->where(DB::raw("$right - $left"), '=', 1);
+    }
+
+    protected function scopeSiblings(Builder $query)
+    {
+        return $query->siblingsAndSelf()
+            ->where($this->getKeyName(), '<>', $this->getKey());
+    }
+
+    protected function scopeSiblingsAndSelf(Builder $query)
+    {
+        $parentIdColumn = $this->getQualifiedParentIdColumn();
+        $parentId = $this->getParentId();
+
+        return $query->where($parentIdColumn, $parentId);
     }
 
     private function buildDescendantsQuery(Builder $query, $includeSelf = false)

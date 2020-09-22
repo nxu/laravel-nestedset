@@ -111,10 +111,45 @@ class NestedSetQueryScopeTest extends IntegrationTestWithDb
         $builder = $this->app->make(SimpleEloquentBuilder::class);
         $builder->rebuild(new TestCategory());
 
-        $mens = TestCategory::where('title', 'Jackets')->first();
+        $jackets = TestCategory::where('title', 'Jackets')->first();
 
-        $leaves = $mens->leaves()->get()->pluck('title');
+        $leaves = $jackets->leaves()->get()->pluck('title');
 
         $this->assertCount(0, $leaves);
+    }
+
+    /** @test */
+    public function siblings_scope_returns_siblings()
+    {
+        $seeder = new SampleCategorySeeder();
+        $seeder->seedWithOnlyParentIds();
+
+        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        $builder->rebuild(new TestCategory());
+
+        $jackets = TestCategory::where('title', 'Jackets')->first();
+
+        $siblings = $jackets->siblings()->get()->pluck('title');
+
+        $this->assertCount(1, $siblings);
+        $this->assertContains('Slacks', $siblings);
+    }
+
+    /** @test */
+    public function siblings_and_self_scope_returns_siblings_and_itself()
+    {
+        $seeder = new SampleCategorySeeder();
+        $seeder->seedWithOnlyParentIds();
+
+        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        $builder->rebuild(new TestCategory());
+
+        $jackets = TestCategory::where('title', 'Jackets')->first();
+
+        $siblings = $jackets->siblingsAndSelf()->get()->pluck('title');
+
+        $this->assertCount(2, $siblings);
+        $this->assertContains('Slacks', $siblings);
+        $this->assertContains('Jackets', $siblings);
     }
 }
