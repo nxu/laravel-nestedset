@@ -4,17 +4,19 @@ namespace Tests;
 
 use Illuminate\Database\Events\TransactionBeginning;
 use Illuminate\Database\Events\TransactionCommitted;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Tests\Database\SampleCategorySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Nxu\NestedSet\Builders\NestedSetRebuilder;
 use Nxu\NestedSet\NestedSet;
 use Tests\TestClasses\TestCategory;
+use Tests\TestClasses\TestCategoryOrderedByTitle;
 
 /**
  * @see https://commons.wikimedia.org/wiki/File:NestedSetModel.svg
  */
-class SimpleEloquentBuilderTest extends IntegrationTestWithDb
+class NestedSetRebuilderTest extends IntegrationTestWithDb
 {
     use RefreshDatabase;
 
@@ -89,5 +91,40 @@ class SimpleEloquentBuilderTest extends IntegrationTestWithDb
 
         Event::assertDispatched(TransactionBeginning::class, 1);
         Event::assertDispatched(TransactionCommitted::class, 1);
+    }
+
+    /** @test */
+    public function it_builds_tree_according_to_sort_order()
+    {
+        $seeder = new SampleCategorySeeder();
+        $seeder->seedWithOnlyParentIds();
+
+        TestCategory::create([
+            'title' => 'Shoes',
+            'parent_id' => null
+        ]);
+
+        $oldId = TestCategory::where('title', 'Clothing')->value('id');
+
+        TestCategory::where('title', 'Clothing')->update(['id' => 999999]);
+        TestCategory::where('parent_id', $oldId)->update(['parent_id' => 999999]);
+
+        /** @var NestedSetRebuilder $builder */
+        $builder = $this->app->make(NestedSetRebuilder::class);
+
+        $builder->rebuild(new TestCategoryOrderedByTitle());
+
+        $nodes = DB::table('test_categories')
+            ->whereIn('title', ['Clothing', 'Shoes', 'Slacks', 'Jackets'])
+            ->get()
+            ->keyBy('title');
+
+        $clothing = $nodes->get('Clothing');
+        $shoes = $nodes->get('Shoes');
+        $slacks = $nodes->get('Slacks');
+        $jackets = $nodes->get('Jackets');
+
+        $this->assertTrue($clothing->left < $shoes->left);
+        $this->assertTrue($jackets->left < $slacks->left);
     }
 }

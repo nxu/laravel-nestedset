@@ -36,10 +36,8 @@ class NestedSetRebuilder
 
     protected function getRootNodes(Node $model)
     {
-        return $model->newQuery()
+        return $model->newNestedSetQuery()
             ->whereNull($model->getQualifiedParentIdColumn())
-            ->orderBy($model->getQualifiedLeftColumn())
-            ->orderBy($model->getQualifiedRightColumn())
             ->get();
     }
 }
