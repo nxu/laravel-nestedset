@@ -16,27 +16,27 @@ use Illuminate\Support\Facades\DB;
  */
 trait HasNestedSetQueryScopes
 {
-    protected function scopeDescendants(Builder $query)
+    public function scopeDescendants(Builder $query)
     {
         return $this->buildDescendantsQuery($query, false);
     }
 
-    protected function scopeDescendantsAndSelf(Builder $query)
+    public function scopeDescendantsAndSelf(Builder $query)
     {
         return $this->buildDescendantsQuery($query, true);
     }
 
-    protected function scopeAncestors(Builder $query)
+    public function scopeAncestors(Builder $query)
     {
         return $this->buildAncestorsQuery($query, false);
     }
 
-    protected function scopeAncestorsAndSelf(Builder $query)
+    public function scopeAncestorsAndSelf(Builder $query)
     {
         return $this->buildAncestorsQuery($query, true);
     }
 
-    protected function scopeLeaves(Builder $query)
+    public function scopeLeaves(Builder $query)
     {
         $left = $this->getQualifiedLeftColumn();
         $right = $this->getQualifiedRightColumn();
@@ -44,13 +44,13 @@ trait HasNestedSetQueryScopes
         return $query->descendants()->where(DB::raw("$right - $left"), '=', 1);
     }
 
-    protected function scopeSiblings(Builder $query)
+    public function scopeSiblings(Builder $query)
     {
         return $query->siblingsAndSelf()
             ->where($this->getKeyName(), '<>', $this->getKey());
     }
 
-    protected function scopeSiblingsAndSelf(Builder $query)
+    public function scopeSiblingsAndSelf(Builder $query)
     {
         $parentIdColumn = $this->getQualifiedParentIdColumn();
         $parentId = $this->getParentId();
