@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use Nxu\NestedSet\Builders\SimpleEloquentBuilder;
+use Nxu\NestedSet\Builders\NestedSetRebuilder;
 use Tests\Database\SampleCategorySeeder;
 use Tests\TestClasses\TestCategory;
 
@@ -14,7 +14,7 @@ class NestedSetQueryScopeTest extends IntegrationTestWithDb
         $seeder = new SampleCategorySeeder();
         $seeder->seedWithOnlyParentIds();
 
-        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        $builder = $this->app->make(NestedSetRebuilder::class);
         $builder->rebuild(new TestCategory());
 
         $mens = TestCategory::where('title', 'Men\'s')->first();
@@ -33,7 +33,7 @@ class NestedSetQueryScopeTest extends IntegrationTestWithDb
         $seeder = new SampleCategorySeeder();
         $seeder->seedWithOnlyParentIds();
 
-        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        $builder = $this->app->make(NestedSetRebuilder::class);
         $builder->rebuild(new TestCategory());
 
         $mens = TestCategory::where('title', 'Men\'s')->first();
@@ -53,7 +53,7 @@ class NestedSetQueryScopeTest extends IntegrationTestWithDb
         $seeder = new SampleCategorySeeder();
         $seeder->seedWithOnlyParentIds();
 
-        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        $builder = $this->app->make(NestedSetRebuilder::class);
         $builder->rebuild(new TestCategory());
 
         $suits = TestCategory::where('title', 'Suits')->first();
@@ -71,7 +71,7 @@ class NestedSetQueryScopeTest extends IntegrationTestWithDb
         $seeder = new SampleCategorySeeder();
         $seeder->seedWithOnlyParentIds();
 
-        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        $builder = $this->app->make(NestedSetRebuilder::class);
         $builder->rebuild(new TestCategory());
 
         $suits = TestCategory::where('title', 'Suits')->first();
@@ -90,7 +90,7 @@ class NestedSetQueryScopeTest extends IntegrationTestWithDb
         $seeder = new SampleCategorySeeder();
         $seeder->seedWithOnlyParentIds();
 
-        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        $builder = $this->app->make(NestedSetRebuilder::class);
         $builder->rebuild(new TestCategory());
 
         $mens = TestCategory::where('title', 'Men\'s')->first();
@@ -108,7 +108,7 @@ class NestedSetQueryScopeTest extends IntegrationTestWithDb
         $seeder = new SampleCategorySeeder();
         $seeder->seedWithOnlyParentIds();
 
-        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        $builder = $this->app->make(NestedSetRebuilder::class);
         $builder->rebuild(new TestCategory());
 
         $jackets = TestCategory::where('title', 'Jackets')->first();
@@ -124,7 +124,7 @@ class NestedSetQueryScopeTest extends IntegrationTestWithDb
         $seeder = new SampleCategorySeeder();
         $seeder->seedWithOnlyParentIds();
 
-        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        $builder = $this->app->make(NestedSetRebuilder::class);
         $builder->rebuild(new TestCategory());
 
         $jackets = TestCategory::where('title', 'Jackets')->first();
@@ -141,7 +141,7 @@ class NestedSetQueryScopeTest extends IntegrationTestWithDb
         $seeder = new SampleCategorySeeder();
         $seeder->seedWithOnlyParentIds();
 
-        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        $builder = $this->app->make(NestedSetRebuilder::class);
         $builder->rebuild(new TestCategory());
 
         $jackets = TestCategory::where('title', 'Jackets')->first();

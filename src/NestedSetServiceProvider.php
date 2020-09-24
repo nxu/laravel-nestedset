@@ -5,7 +5,7 @@ namespace Nxu\NestedSet;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\ServiceProvider;
 use Nxu\NestedSet\Builders\NestedSetBuilder;
-use Nxu\NestedSet\Builders\SimpleEloquentBuilder;
+use Nxu\NestedSet\Builders\NestedSetRebuilder;
 
 class NestedSetServiceProvider extends ServiceProvider
 {
@@ -30,6 +30,6 @@ class NestedSetServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->app->bind(NestedSetBuilder::class, SimpleEloquentBuilder::class);
+        $this->app->bind(NestedSetBuilder::class, NestedSetRebuilder::class);
     }
 }

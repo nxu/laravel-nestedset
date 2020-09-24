@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use Nxu\NestedSet\Builders\SimpleEloquentBuilder;
+use Nxu\NestedSet\Builders\NestedSetRebuilder;
 use Tests\Database\SampleCategorySeeder;
 use Tests\TestClasses\TestCategory;
 
@@ -14,7 +14,7 @@ class NestedSetQueryTest extends IntegrationTestWithDb
         $seeder = new SampleCategorySeeder();
         $seeder->seedWithOnlyParentIds();
 
-        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        $builder = $this->app->make(NestedSetRebuilder::class);
         $builder->rebuild(new TestCategory());
 
         $leaves = TestCategory::allLeaves()->pluck('title');
@@ -31,7 +31,7 @@ class NestedSetQueryTest extends IntegrationTestWithDb
         $seeder = new SampleCategorySeeder();
         $seeder->seedWithOnlyParentIds();
 
-        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        $builder = $this->app->make(NestedSetRebuilder::class);
         $builder->rebuild(new TestCategory());
 
         TestCategory::where('title', 'Skirts')->update(['id' => 999999]);
@@ -53,7 +53,7 @@ class NestedSetQueryTest extends IntegrationTestWithDb
             'parent_id' => null
         ]);
 
-        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        $builder = $this->app->make(NestedSetRebuilder::class);
         $builder->rebuild(new TestCategory());
 
         $roots = TestCategory::allRoots()->pluck('title');
@@ -76,7 +76,7 @@ class NestedSetQueryTest extends IntegrationTestWithDb
 
         TestCategory::where('title', 'Clothing')->update(['id' => 999999]);
 
-        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        $builder = $this->app->make(NestedSetRebuilder::class);
         $builder->rebuild(new TestCategory());
 
         $roots = TestCategory::allRoots()->pluck('title');

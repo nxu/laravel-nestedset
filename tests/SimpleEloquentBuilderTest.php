@@ -7,7 +7,7 @@ use Illuminate\Database\Events\TransactionCommitted;
 use Illuminate\Support\Facades\Event;
 use Tests\Database\SampleCategorySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Nxu\NestedSet\Builders\SimpleEloquentBuilder;
+use Nxu\NestedSet\Builders\NestedSetRebuilder;
 use Nxu\NestedSet\NestedSet;
 use Tests\TestClasses\TestCategory;
 
@@ -24,8 +24,8 @@ class SimpleEloquentBuilderTest extends IntegrationTestWithDb
         $seeder = new SampleCategorySeeder();
         $seeder->seedWithOnlyParentIds();
 
-        /** @var SimpleEloquentBuilder $builder */
-        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        /** @var NestedSetRebuilder $builder */
+        $builder = $this->app->make(NestedSetRebuilder::class);
 
         $builder->rebuild(new TestCategory());
 
@@ -84,7 +84,7 @@ class SimpleEloquentBuilderTest extends IntegrationTestWithDb
             Event::fake([TransactionBeginning::class, TransactionCommitted::class])
         );
 
-        $builder = $this->app->make(SimpleEloquentBuilder::class);
+        $builder = $this->app->make(NestedSetRebuilder::class);
         $builder->rebuild($testCategory);
 
         Event::assertDispatched(TransactionBeginning::class, 1);

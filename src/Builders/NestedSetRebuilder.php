@@ -4,7 +4,7 @@ namespace Nxu\NestedSet\Builders;
 
 use Nxu\NestedSet\Eloquent\Node;
 
-class SimpleEloquentBuilder implements NestedSetBuilder
+class NestedSetRebuilder
 {
     public function rebuild(Node $model): void
     {
