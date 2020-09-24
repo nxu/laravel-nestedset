@@ -1,4 +1,5 @@
 ![Tests](https://github.com/nXu/laravel-nestedset/workflows/Tests/badge.svg)
+![Code Style](https://github.com/nXu/laravel-nestedset/workflows/Code%20Style/badge.svg)
 
 # Nested Sets for Laravel 
 Implementation of the 
